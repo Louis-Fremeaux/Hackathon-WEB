@@ -3,7 +3,8 @@
 {% else %}
     <div style="display:flex;">
         {% for h in hackathons %}
-            <div style="background:white;border:1px solid gray;padding:20px;margin:20px;box-shadow:-0.2em 0.2em 0.8em gray;">
+            <div class="card" data-controller="flip" data-controller="flip"
+                 data-action="mouseenter->flip#flip mouseleave->flip#unflip" style="background:white;border:1px solid gray;padding:20px;margin:20px;box-shadow:-0.2em 0.2em 0.8em gray;">
                 {% if loop is defined and loop.first %}
                     <div>Nouveau</div>
                 {% endif %}
@@ -20,6 +21,9 @@
                 {% if h.dateHeureDebut is defined and h.dateHeureDebut is not null and
                     h.dateHeureFin is defined and h.dateHeureFin is not null %}
                 <p>({{ h.dateHeureDebut|date('d/m H:i') }} → {{ h.dateHeureFin|date('d/m H:i') }})</p>
+                    <div class="card-back absolute inset-0 flex items-center justify-center bg-red-500 text-white text-xl font-bold rounded-xl">
+                        Dos
+                    </div>
                 {% endif %}
             </div>
         {% endfor %}
