@@ -1,20 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DemoController!{% endblock %}
+{% block title %}{{ titre_page }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 Helvetica; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/louis/PhpstormProjects/hackathon-web/src/Controller/DemoController.php</code></li>
-        <li>Your template at <code>/Users/louis/PhpstormProjects/hackathon-web/templates/demo/index.html.twig</code></li>
-    </ul>
-</div>
+    <div class="example-wrapper">
+        <h1>{{ titre_page }}</h1>
+        <h5>We are the {{ "now"|date('d/m/Y') }} | {{ "Twig note"|upper }}</h5>
+
+        {% set description = '<strong>Bienvenue</strong>' %}
+        <p>Échappé (sécurisé) : {{ description }}</p>
+        <p>Non échappé (dangereux si entrée utilisateur) : {{ description|raw }}</p>
+
+
+        {% if connected %}
+            <p>Bienvenue !</p>
+        {% else %}
+            <a href="#">Se connecter</a>
+        {% endif %}
+        {% include 'partials/_card_hackathon.html.twig' %}
+
+        {% import 'macros/_ui.html.twig' as ui %}
+        {{ ui.badge('Inscrivez-vous !') }}
+    </div>
 {% endblock %}

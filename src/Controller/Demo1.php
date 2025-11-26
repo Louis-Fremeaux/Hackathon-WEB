@@ -12,7 +12,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-final class DemoController extends AbstractController
+final class Demo1 extends AbstractController
 {
     /**
      * @throws TransportExceptionInterface
@@ -24,10 +24,10 @@ final class DemoController extends AbstractController
     #[Route('/demo', name: 'app_demo')]
     public function index(ApiConnect $api): Response
     {
-        return $this->render('demo/index.html.twig',[
-            'titre_page' => 'Liste des hackathons',
-            'hackathons' => $api->get('/api/hackathons')['member'],
-            'connected'  => true,
+        return $this->render('list.html.twig',[
+            'controller_name' => 'DemoController',
+            'usernames' => $api->get('/api/participants/')['member'],
+            'date' => date('D d')
         ]);
     }
 }

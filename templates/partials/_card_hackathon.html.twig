@@ -1,0 +1,36 @@
+{% if hackathons is empty %}
+    <p>Aucun événement</p>
+{% else %}
+    <div style="display:flex;">
+        {% for h in hackathons %}
+            <div style="background:white;border:1px solid gray;padding:20px;margin:20px;box-shadow:-0.2em 0.2em 0.8em gray;">
+                {% if loop is defined and loop.first %}
+                    <div>Nouveau</div>
+                {% endif %}
+                <h2>Hackathon n°{{ loop.index }}</h2>
+                {% if h.theme is defined and h.theme is not null %}
+                    <p><u>Theme</u> : {{ h.theme }}</p>
+                {% endif %}
+                {% if h.ville is defined and h.ville is not null and h.lieu is defined and h.lieu is not null %}
+                    <p><u>Lieu</u> : {{ h.ville }} - {{ h.lieu }}</p>
+                {% endif %}
+                {% if h.affiche is defined and h.affiche is not null %}
+                    <img src="{{ asset(h.affiche) }}" alt="Affiche" width="120">
+                {% endif %}
+                {% if h.dateHeureDebut is defined and h.dateHeureDebut is not null and
+                    h.dateHeureFin is defined and h.dateHeureFin is not null %}
+                <p>({{ h.dateHeureDebut|date('d/m H:i') }} → {{ h.dateHeureFin|date('d/m H:i') }})</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <p>{{ hackathons|length }} événements</p>
+    <ul>
+        {% for h in hackathons %}
+            <li>
+                <strong>{{ h.theme }}</strong> — {{ h.ville }} / {{ h.lieu }}
+                ({{ h.dateHeureDebut|date('d/m H:i') }} → {{ h.dateHeureFin|date('d/m H:i') }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
