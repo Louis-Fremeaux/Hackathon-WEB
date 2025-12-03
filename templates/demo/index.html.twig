@@ -3,13 +3,7 @@
 {% block title %}{{ titre_page }}{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 Helvetica; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-
-    <div class="example-wrapper">
+    <div class="flex flex-col items-center w-full h-screen p-10">
         <h1>{{ titre_page }}</h1>
         <h5>We are the {{ "now"|date('d/m/Y') }} | {{ "Twig note"|upper }}</h5>
 
