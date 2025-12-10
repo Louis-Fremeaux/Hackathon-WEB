@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hackathons à venir{% endblock %}
+
+{% block body %}
+    <section class="space-y-6">
+        <header class="space-y-2">
+            <h1 class="headline">Les Hackathons à venir 🚀</h1>
+            <p class="muted">Rejoignez les plus grands défis Tech de France</p>
+        </header>
+
+        {% if hackathons is empty %}
+            <div class="card p-6">
+                <p class="muted">Aucun événement pour le moment.</p>
+            </div>
+        {% else %}
+            <div class="bg-white m-10 flex flex-row flex-wrap justify-between rounded-lg">
+                {% for h in hackathons %}
+                    <article class="bg-stone-400 rounded-lg card p-5 m-2 space-y-2 hover:-translate-y-1 hover:shadow-xl transition transform" style="box-shadow: 0 0 8px black;">
+                        <h2 class="text-xl font-semibold">{{ h.theme ?? 'Hackathon sans titre' }}</h2>
+                        <p class="muted text-sm">{{ h.ville ?? 'Ville inconnue' }} – {{ h.lieu ?? 'Lieu à venir' }}</p>
+                        <p class="text-sm">
+                            Du {{ h.dateHeureDebut|date('d/m/Y H:i') }}
+                            <br>au {{ h.dateHeureFin|date('d/m/Y H:i') }}
+                        </p>
+                        <p>Objectif : {{ h.objectifs }}</p>
+                        {% if h.affiche is defined and h.affiche is not null %}
+                            <img src="{{ asset(h.affiche) }}" alt="Affiche" width="100">
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

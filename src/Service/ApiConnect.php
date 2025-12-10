@@ -34,7 +34,13 @@ readonly class ApiConnect
     {
         return $this->client->request('POST', $this->apiUrl.'/api/login',['json'=>['email'=>$user,'password'=>$password]])->toArray()['token'];
     }
-
+    private function path(string $path): string
+    {
+        if (!str_starts_with($path,"/")){
+            $path = '/'.$path;
+        }
+        return $path;
+    }
     /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
@@ -44,8 +50,8 @@ readonly class ApiConnect
      */
     public function get(string $endpoint): array
     {
-        return $this->client->request('GET',
-               $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$_COOKIE['token']]])->toArray();
+        $endpoint=$this->path($endpoint);
+        return $this->client->request('GET', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$_COOKIE['token']]])->toArray();
     }
 
     public function post(string $endpoint): array
