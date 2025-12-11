@@ -19,7 +19,7 @@ readonly class ApiConnect
      * @throws ClientExceptionInterface
      */
     public function __construct(private HttpClientInterface $client, private string $apiUrl){
-        setcookie('token', $this->getToken('louis.fremeaux@icloud.com','loulou'),['httpOnly'=>true,'expires'=>time()+60]);
+        setcookie('token', $this->getToken('louis.fremeaux@icloud.com','loulou'),['httpOnly'=>true,/*'expires'=>time()+600*/]);
 
     }
 
@@ -54,22 +54,28 @@ readonly class ApiConnect
         return $this->client->request('GET', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$_COOKIE['token']]])->toArray();
     }
 
-    public function post(string $endpoint): array
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function post(string $endpoint, array $data): array
     {
-        //TODO post function
-        //return $this->client->request('GET', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$this->token]])->toArray();
-        return [$endpoint];
+        $endpoint=$this->path($endpoint);
+        return $this->client->request('POST',$this->apiUrl.$endpoint,['headers'=>['Authorization'=>'Bearer '.$_COOKIE['token']],'json' => $data])->toArray();
     }
     public function patch(string $endpoint): array
     {
         //TODO patch function
-        //return $this->client->request('GET', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$this->token]])->toArray();
+        //return $this->client->request('PATCH', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$_COOKIE['token']]])->toArray();
         return [$endpoint];
     }
     public function delete(string $endpoint): array
     {
         //TODO delete function
-        //return $this->client->request('GET', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$this->token]])->toArray();
+        //return $this->client->request('DELETE', $this->apiUrl.$endpoint,['headers' => ['Authorization' => 'Bearer '.$_COOKIE['token']])->toArray();
         return [$endpoint];
     }
 }

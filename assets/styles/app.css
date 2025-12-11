@@ -53,3 +53,21 @@ body {
 .rotate-y-180 {
     transform: rotateY(180deg);
 }
+.card {
+    width:30em;
+    border:1px solid #e5e7eb;
+    border-radius:.75rem; background:#fff
+}
+.btn, .btn-primary{
+    border: 1px black solid;
+    border-radius: 5px;
+    padding:5px;
+    margin:5px;
+}
+.btn{
+    background-color: darkgrey;
+}
+.btn-primary{
+    background-color: deepskyblue;
+}
+

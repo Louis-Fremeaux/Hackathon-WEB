@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\ApiConnect;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -21,12 +22,17 @@ final class HackathonFrontController extends AbstractController
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    #[Route('/proposer', name: 'app_hackathon_proposer')]
-    public function proposer(ApiConnect $api): Response
+    #[Route('/proposer', name: 'app_hackathon_proposer', methods: ['GET','POST'])]
+    public function proposer(Request $request,ApiConnect $api): Response
     {
+        if ($request->isMethod('POST')) {
+            $api->post('/api/hackathons',$request->request->all('hackathon'));
+            $this->addFlash('success', 'Brouillon reçu (démo).');
+            return $this->redirectToRoute('app_hackathon_proposer');
+        }
         return $this->render('hackathon_front/index.html.twig', [
             'controller_name' => 'HackathonFrontController',
-            'hackathons' => $api->get('/api/hackathons')['member'],
+            'hackathons' => $api->get('/api/hackathons'),
         ]);
     }
 }

@@ -1,20 +1,178 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello HackathonFrontController!{% endblock %}
-
+{% block title %}Proposer un Hackathon{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/louis/PhpstormProjects/hackathon-web/src/Controller/HackathonFrontController.php</code></li>
-        <li>Your template at <code>/Users/louis/PhpstormProjects/hackathon-web/templates/hackathon_front/index.html.twig</code></li>
-    </ul>
-</div>
+    <section class="space-y-8" data-controller="form-wizard"
+             data-form-wizard-current-step-value="1">
+            <header class="space-y-2">
+                <h1 class="headline">Proposer un Hackathon 🚀</h1>
+                <p class="muted">Le formulaire s’adapte automatiquement à vos réponses.</p>
+            </header>
+            {# Étapes (fil d’Ariane simple) #}
+            {# Étapes (fil d’Ariane simple) #}
+            <nav class="flex gap-2 text-sm">
+                <span data-form-wizard-target="stepper" class="badge">1. Type</span>
+                <span data-form-wizard-target="stepper" class="badge">2. Dates</span>
+                <span data-form-wizard-target="stepper" class="badge">3. Inscriptions</span>
+                <span data-form-wizard-target="stepper" class="badge">4. Récap</span>
+            </nav>
+            <form method="post" action="{{ path('app_hackathon_proposer') }}" data-form-wizard-target="form" class="space-y-8">
+                {# ========== Étape 1 : Type & localisation ========== #}
+                {# ========== Étape 1 : Type & localisation ========== #}
+                <section data-form-wizard-target="step" data-step="1" class="card p-6 space-y-4">
+                    <h2 class="text-lg font-semibold">1) Type & localisation</h2>
+                    <div class="space-y-2">
+                        <div class="space-y-2">
+                            <label class="font-medium">Type d’événement *</label>
+                            <div class="flex gap-4">
+                                <label>
+                                    <input type="radio" name="hackathon[type]" value="presentiel" data-action="change->form-wizard#onTypeChange"> Présentiel
+                                </label>
+                                <label>
+                                    <input type="radio" name="hackathon[type]" value="en-ligne" data-action="change->form-wizard#onTypeChange"> En ligne
+                                </label>
+                            </div>
+                        </div>
+                        {# Bloc adresse — visible si “présentiel” #}
+                        {# Bloc adresse — visible si “présentiel” #}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                             data-form-wizard-target="adresseGroup">
+                            <div>
+                                <label class="font-medium">Lieu</label>
+                                <label>
+                                    <input class="input" type="text" name="hackathon[lieu]"
+                                           placeholder="Ex: Hémicycle, Campus X"
+                                           data-action="input->form-wizard#updatePreview">
+                                </label>
+                            </div>
+                            <div>
+                                <label class="font-medium">Adresse</label>
+                                <label>
+                                    <input class="input" type="text" name="hackathon[adresse]"
+                                           placeholder="10 rue de la Paix"
+                                           data-action="input->form-wizard#updatePreview">
+                                </label>
+                            </div>
+                            <div>
+                                <label class="font-medium">Ville</label>
+                                <label>
+                                    <input class="input" type="text" name="hackathon[ville]"
+                                           placeholder="Nantes"
+                                           data-action="input->form-wizard#updatePreview">
+                                </label>
+                            </div>
+                            <div>
+                                <label class="font-medium">Code postal</label>
+                                <label>
+                                    <input class="input" type="text" name="hackathon[cp]"
+                                           pattern="\\d{5}" placeholder="44000"
+                                           data-action="input->form-wizard#updatePreview">
+                                </label>
+                            </div>
+                        </div>
+                        {# Bloc URL — visible si “en-ligne” #}
+                        <div data-form-wizard-target="urlGroup">
+                            <label class="font-medium">URL de l’événement</label>
+                            <label>
+                                <input class="input" type="url" name="hackathon[url]"
+                                       placeholder="https://event.example.com"
+                                       data-action="input->form-wizard#updatePreview">
+                            </label>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="flex gap-2">
+                                <button type="button" class="btn" disabled>Précédent</button>
+                                <button type="button" class="btn btn-primary"
+                                        data-action="click->form-wizard#goNext">Étape suivante</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {# ========== Étape 2 : Dates ========== #}
+                <section data-form-wizard-target="step" data-step="2" class="card p-6 space-y-4">
+                    <h2 class="text-lg font-semibold">2) Dates</h2>
+                    <div class="flex flex-col">
+                        <div class="flex">
+                            <div>
+                                <label class="font-medium">Début *</label>
+                                <label>
+                                    <input class="input" type="datetime-local" name="hackathon[dateHeureDebut]"
+                                           data-action="change->form-wizard#onDateChange input->form-wizard#updatePreview">
+                                </label>
+                            </div>
+                            <div>
+                                <label class="font-medium">Événement sur plusieurs jours ?</label>
+                                <label>
+                                    <input type="checkbox" name="hackathon[multiJours]" value="1"
+                                           data-action="change->form-wizard#toggleFin">
+                                </label>
+                            </div>
+                            <div data-form-wizard-target="finGroup">
+                                <label class="font-medium">Fin</label>
+                                <label>
+                                    <input class="input" type="datetime-local" name="hackathon[dateHeureFin]"
+                                           data-action="change->form-wizard#onDateChange input->form-wizard#updatePreview">
+                                </label>
+                                <p class="text-xs muted" data-form-wizard-target="dateHelp"></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="flex gap-2">
+                                <button type="button" class="btn" data-action="click->form-wizard#goPrev">Précédent</button>
+                                <button type="button" class="btn btn-primary" data-action="click->form-wizard#goNext">Étape suivante</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {# ========== Étape 3 : Inscriptions ========== #}
+                <section data-form-wizard-target="step" data-step="3" class="card p-6 space-y-4">
+                    <h2 class="text-lg font-semibold">3) Inscriptions</h2>
+                    <div class="space-y-2">
+                            <label class="font-medium">Inscriptions obligatoires ?</label>
+                            <div class="flex gap-4">
+                                <label><input type="radio" name="hackathon[inscriptionObligatoire]" value="oui"
+                                              data-action="change->form-wizard#onInscriptionChange"> Oui</label>
+                                <label><input type="radio" name="hackathon[inscriptionObligatoire]" value="non"
+                                              data-action="change->form-wizard#onInscriptionChange"> Non</label>
+                            </div>
+                    </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-form-wizard-target="inscriptionGroup">
+                                <div>
+                                    <label class="font-medium">URL d’inscription</label>
+                                    <label>
+                                        <input class="input" type="url" name="hackathon[urlInscription]"
+                                               placeholder="https://inscriptions.example.com"
+                                               data-action="input->form-wizard#updatePreview">
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="font-medium">Date limite</label>
+                                    <label>
+                                        <input class="input" type="date" name="hackathon[dateLimiteInscription]"
+                                               data-action="change->form-wizard#updatePreview">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex gap-2">
+                                    <button type="button" class="btn" data-action="click->form-wizard#goPrev">Précédent</button>
+                                    <button type="button" class="btn btn-primary" data-action="click->form-wizard#goNext">Étape suivante</button>
+                                </div>
+                            </div>
+                </section>
+                {# ========== Étape 4 : Récap dynamique ========== #}
+                <section data-form-wizard-target="step" data-step="4" class="card p-6 space-y-4">
+                    <h2 class="text-lg font-semibold">4) Récapitulatif</h2>
+                    <article class="p-4 border rounded space-y-2" data-form-wizard-target="preview">
+                            <h3 class="font-semibold">Aperçu</h3>
+                            <p class="muted">Complétez le formulaire : les infos s’affichent ici.</p>
+                        </article>
+                        <div class="flex justify-end gap-2">
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="btn" data-action="click->form-wizard#goPrev">Précédent</button>
+                                <button type="submit" class="btn btn-primary">Envoyer (démo)</button>
+                            </div>
+                        </div>
+                </section>
+            </form>
+    </section>
 {% endblock %}
