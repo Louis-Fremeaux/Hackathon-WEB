@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription Hackathon — Listes dépendantes{% endblock %}
+
+{% block body %}
+    <section class="space-y-8"
+             data-controller="cascade"
+        {# Endpoints pour le mode API live (si fournis) #}
+             data-cascade-api-base-value="{{ api_base|default('') }}"
+             data-cascade-villes-endpoint-value="/api/regions/:id/villes"
+             data-cascade-lieux-endpoint-value="/api/villes/:id/lieux"
+             data-cascade-tracks-endpoint-value="/api/themes/:id/tracks">
+        <header class="space-y-1">
+            <h1 class="headline">Inscription à un hackathon — Sélection guidée</h1>
+            <p class="muted">Les listes se mettent à jour automatiquement suivant vos choix.</p>
+        </header>
+
+        <form class="space-y-6 flex justify-center" data-cascade-target="form">
+
+            {# 1) Type d’événement #}
+            <div class="card p-5 space-y-2 m-2">
+                <label class="font-semibold">Type d’événement *</label>
+                <label>
+                    <select name="type" class="input" required
+                            data-action="change->cascade#onTypeChange">
+                        <option value="">— Sélectionner —</option>
+                        <option value="presentiel">Présentiel</option>
+                        <option value="en-ligne">En ligne</option>
+                    </select>
+                </label>
+            </div>
+
+            {# 2) Localisation (visible si présentiel) #}
+            <div class="card p-5 space-y-3 m-2" data-cascade-target="localGroup" hidden>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="font-medium">Région *</label>
+                        <label>
+                            <select name="region" class="input"
+                                    data-action="change->cascade#onRegionChange"
+                                    data-cascade-target="region">
+                                <option value="">— Choisir —</option>
+                                {# — (à remplacer si API live) — #}
+                                <option value="pl">Pays de la Loire</option>
+                                <option value="idf">Île-de-France</option>
+                                <option value="na">Nouvelle-Aquitaine</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="font-medium">Ville *</label>
+                        <label>
+                            <select name="ville" class="input"
+                                    data-action="change->cascade#onVilleChange"
+                                    data-cascade-target="ville">
+                                <option value="">— (choisir région d’abord) —</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="font-medium">Lieu *</label>
+                        <label>
+                            <select name="lieu" class="input" data-cascade-target="lieu">
+                                <option value="">— (choisir ville d’abord) —</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <p class="text-xs muted" data-cascade-target="localHelp"></p>
+            </div>
+
+            {# 3) Plateforme (visible si en-ligne) #}
+            <div class="card p-5 space-y-2 m-2" data-cascade-target="remoteGroup" hidden>
+                <label class="font-medium">Plateforme *</label>
+                <label>
+                    <select name="plateforme" class="input" data-cascade-target="plateforme">
+                        <option value="">— Choisir —</option>
+                        {% for p in plateformes %}
+                            <option value="{{ p }}">{{ p }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            {# 4) Thème → Piste (tracks) #}
+            <div class="card p-5 space-y-3 m-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-medium">Thème *</label>
+                        <label>
+                            <select name="theme" class="input"
+                                    data-action="change->cascade#onThemeChange"
+                                    data-cascade-target="theme">
+                                <option value="">— Sélectionner —</option>
+                                {% for t in themes %}
+                                    <option value="{{ t.id }}">{{ t.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="font-medium">Piste</label>
+                        <label>
+                            <select name="track" class="input" data-cascade-target="track">
+                                <option value="">— (choisir thème d’abord) —</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <p class="text-xs muted" data-cascade-target="themeHelp"></p>
+            </div>
+
+            {# Aperçu #}
+
+            <div class="card p-5 space-y-3 m-2">
+                <h2 class="text-lg font-semibold">Aperçu</h2>
+                <div data-cascade-target="preview" class="prose text-sm"></div>
+                <button type="button" class="btn btn-primary" data-action="click->cascade#debugSubmit">
+                    Envoyer (démo)
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock %}
