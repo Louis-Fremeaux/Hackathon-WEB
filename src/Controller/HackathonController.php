@@ -26,7 +26,7 @@ final class HackathonController extends AbstractController
     {
         return $this->render('hackathon/index.html.twig', [
             'controller_name' => 'HackathonController',
-            'hackathons' => $api->get('/api/hackathons')['member'],
+            'hackathons' => $api->get('/api/hackathons'),
         ]);
     }
 }

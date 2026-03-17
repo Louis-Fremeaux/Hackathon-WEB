@@ -64,6 +64,7 @@ readonly class ApiConnect
     public function post(string $endpoint, array $data): array
     {
         $endpoint=$this->path($endpoint);
+        $data+= ["organisateur" => "/api/organisateurs/6",];
         return $this->client->request('POST',$this->apiUrl.$endpoint,['headers'=>['Authorization'=>'Bearer '.$_COOKIE['token']],'json' => $data])->toArray();
     }
     public function patch(string $endpoint): array

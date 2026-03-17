@@ -8,7 +8,6 @@
                 <p class="muted">Le formulaire s’adapte automatiquement à vos réponses.</p>
             </header>
             {# Étapes (fil d’Ariane simple) #}
-            {# Étapes (fil d’Ariane simple) #}
             <nav class="flex gap-2 text-sm">
                 <span data-form-wizard-target="stepper" class="badge">1. Type</span>
                 <span data-form-wizard-target="stepper" class="badge">2. Dates</span>
@@ -16,7 +15,6 @@
                 <span data-form-wizard-target="stepper" class="badge">4. Récap</span>
             </nav>
             <form method="post" action="{{ path('app_hackathon_proposer') }}" data-form-wizard-target="form" class="space-y-8">
-                {# ========== Étape 1 : Type & localisation ========== #}
                 {# ========== Étape 1 : Type & localisation ========== #}
                 <section data-form-wizard-target="step" data-step="1" class="card p-6 space-y-4">
                     <h2 class="text-lg font-semibold">1) Type & localisation</h2>
@@ -32,7 +30,6 @@
                                 </label>
                             </div>
                         </div>
-                        {# Bloc adresse — visible si “présentiel” #}
                         {# Bloc adresse — visible si “présentiel” #}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"
                              data-form-wizard-target="adresseGroup">
@@ -61,10 +58,9 @@
                                 </label>
                             </div>
                             <div>
-                                <label class="font-medium">Code postal</label>
+                                <label class="font-medium">theme</label>
                                 <label>
-                                    <input class="input" type="text" name="hackathon[cp]"
-                                           pattern="\\d{5}" placeholder="44000"
+                                    <input class="input" type="text" name="hackathon[theme]" placeholder="cyber"
                                            data-action="input->form-wizard#updatePreview">
                                 </label>
                             </div>
