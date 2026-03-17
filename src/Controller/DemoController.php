@@ -26,7 +26,7 @@ final class DemoController extends AbstractController
     {
         return $this->render('demo/index.html.twig',[
             'titre_page' => 'Liste des hackathons',
-            'hackathons' => $api->get('/api/hackathons')['member'],
+            'hackathons' => $api->get('/api/hackathons'),
             'connected'  => true,
         ]);
     }
